@@ -11,11 +11,36 @@
                             <h1>{{ tempProduct.name}}</h1>
                         </a>
                         <div class="price">{{tempProduct.unitPrice | currency: "USD"}}</div>
-                        <a href="#" class="primary-btn">Add to cart</a>
+                        <button class="btn btn-primary btn-sm" (click)="addToCard(tempProduct)"> Add to cart</button>
                     </div>
                 </div>
                 <div *ngIf="products.length == 0" class="alert alert-warning col-md-12" role="alert">
                     No products found.
+                </div>
+            </div>
+
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-9" style="padding-left: 30%">
+                                <ngb-pagination [(page)]="thePageNumber" [pageSize]="thePageSize" [maxSize]="5"
+                                    [boundaryLinks]="true" [collectionSize]="theTotalElements"
+                                    (pageChange)="listProducts()"></ngb-pagination>
+                            </div>
+                            <div class="col-md-3 mt-2" style="text-align: right;">
+                                <span class="mr-2">Page Size</span>
+                                <select #changeSelect (change)="updatePageSize(changeSelect.value)"
+                                    [value]="thePageSize">
+                                    <option selected>5</option>
+                                    <option selected>10</option>
+                                    <option selected>20</option>
+                                    <option selected>50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

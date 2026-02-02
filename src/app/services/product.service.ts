@@ -37,11 +37,10 @@ export class ProductService {
       .pipe(map((response) => response._embedded.productCategory));
   }
 
-  searchProducts(query: string): Observable<Product[]> {
-    const searchUrl = `${this.baseUrl}/products/search/findByNameContaining?name=${query}`;
-    return this.httpClient
-      .get<GetResponseProduct>(searchUrl)
-      .pipe(map((response) => response._embedded.products));
+  searchProducts(query: string,thePage: number, pageSize: number): Observable<GetResponseProduct> {
+    const searchUrl = `${this.baseUrl}/products/search/findByNameContaining?name=${query}&page=${thePage}&size=${pageSize}`;
+    return this.httpClient.get<GetResponseProduct>(searchUrl)
+    
   }
 }
 

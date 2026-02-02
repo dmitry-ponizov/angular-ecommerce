@@ -3,11 +3,12 @@ import { ProductService } from './../../services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgbModule],
   templateUrl: './product-list-grid.component.html',
   styleUrls: ['./product-list.component.css'],
 })
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit {
   thePageNumber: number = 1;
   thePageSize: number = 10;
   theTotalElements: number = 0;
+  previousKeyword: string = ""
 
   constructor(
     private productService: ProductService,
@@ -45,9 +47,28 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
-    this.productService.searchProducts(theKeyword).subscribe((data) => {
-      this.products = data;
+    if(this.previousKeyword !== theKeyword) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword 
+    this.productService.searchProducts(theKeyword, this.thePageNumber - 1, this.thePageSize).subscribe((data) => {
+          this.products = data._embedded.products;
+          this.thePageNumber = data.page.number + 1;
+          this.thePageSize = data.page.size;
+          this.theTotalElements = data.page.totalElements;
     });
+  }
+
+  updatePageSize(pageSize: string) {
+    this.thePageSize = Number(pageSize);
+    this.thePageNumber = 1;
+    this.listProducts();
+  }
+
+
+  addToCard(product: Product) {
+    console.log(product.name, product.unitPrice)
   }
 
   handleListProducts() {
