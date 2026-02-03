@@ -11,31 +11,12 @@ import { SearchComponent } from './components/search/search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CardStatusComponent } from './components/card-status/card-status.component';
+import { CartDetailsComponent } from './components/cart-details/cart-details.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { routes } from 'src/app.routes';
+import { ReactiveFormsModule } from '@angular/forms';
 
-const routes: Routes = [
-  {
-    path: 'category/:id',
-    component: ProductListComponent,
-  },
-  {
-    path: 'category',
-    component: ProductListComponent,
-  },
-  {
-    path: 'products',
-    component: ProductListComponent,
-  },
-  {
-    path: '',
-    redirectTo: '/products',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: '/products',
-    pathMatch: 'full',
-  },
-];
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -47,10 +28,14 @@ const routes: Routes = [
     SearchComponent,
     ProductDetailsComponent,
     NgbModule,
-    CardStatusComponent
+    CardStatusComponent,
+    CartDetailsComponent,
+    CheckoutComponent,
+    ReactiveFormsModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent],
+
   
 })
 export class AppModule {}

@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -26,6 +28,7 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private cartService: CartService,
     private route: ActivatedRoute
   ) {}
 
@@ -68,7 +71,8 @@ export class ProductListComponent implements OnInit {
 
 
   addToCard(product: Product) {
-    console.log(product.name, product.unitPrice)
+    const theCartItem = new CartItem(product)
+    this.cartService.addToCart(theCartItem)
   }
 
   handleListProducts() {

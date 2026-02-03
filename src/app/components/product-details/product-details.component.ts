@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute, RouterLinkWithHref } from '@angular/router';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -16,6 +18,7 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private cartService: CartService,
     private route: ActivatedRoute
   ) {}
 
@@ -32,4 +35,10 @@ export class ProductDetailsComponent implements OnInit {
       this.product = data;
     });
   }
+
+  addToCard(product: Product) {
+    const theCartItem = new CartItem(product)
+    this.cartService.addToCart(theCartItem)
+  }
+
 }

@@ -16,23 +16,15 @@ export class CartService {
   constructor() { }
 
 
-  addToCardItem(theCardItem: CartItem) {
-    let isExist: boolean = false
+  addToCart(theCardItem: CartItem) {
     let existingCardItem: CartItem | undefined = undefined;
 
     if(this.cartItems.length  > 0) {
-      for(let cartItem of this.cartItems) {
-        if(cartItem.id === theCardItem.id) {
-          existingCardItem = cartItem
-          isExist = true
-          break
-        }
-      }
-
+      existingCardItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCardItem.id)
     }
 
-    if(isExist) {
-      existingCardItem!.quantity++
+    if(existingCardItem) {
+      existingCardItem.quantity++
     } else {
       this.cartItems.push(theCardItem)
     }
@@ -51,10 +43,23 @@ export class CartService {
     this.totalPrice.next(totalPriceValue)
     this.totalQuantity.next(totalQuantityValue)
 
-    this.logCartData(totalPriceValue, totalQuantityValue)
   }
 
-  logCartData() {
-    
+  decrementQuantity(theCartItem: CartItem) {
+    theCartItem.quantity--
+    if(theCartItem.quantity === 0) {
+      this.remove(theCartItem)
+    } else {
+      this.computeCartTotals()
+    }
   }
+
+  remove(theCartItem: CartItem) {
+    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === theCartItem.id)
+    if(itemIndex > -1) {
+      this.cartItems.splice(itemIndex, 1)
+      this.computeCartTotals()
+    }
+  }
+
 }
